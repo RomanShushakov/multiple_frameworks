@@ -5,7 +5,7 @@ services:
     container_name: app_backend
     environment:
       JWT_SECRET: secret
-      CORS_ORIGIN: http://localhost:8080
+      CORS_ORIGIN: http://localhost:5001
     networks:
       - app-tier
     ports:

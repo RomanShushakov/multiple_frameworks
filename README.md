@@ -34,7 +34,7 @@ All user info pages should have the same content and functionality regardless of
 
 - [ ] Add global Vite config
 - [ ] Add start page
-- [ ] Add auth page
+- [X] Add auth page
 - [ ] Add **Vue** user info page
 - [ ] Add **Svelte** user info page
 - [ ] Add **React** user info page
