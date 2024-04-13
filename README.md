@@ -29,3 +29,19 @@ All user info pages should have the same content and functionality regardless of
 ##### Boss info page (extended)
 
 ![Image](./docs/images/boss%20info%20page%20extended.svg)
+
+### Tasks
+
+- [ ] Add global Vite config
+- [ ] Add start page
+- [ ] Add auth page
+- [ ] Add **Vue** user info page
+- [ ] Add **Svelte** user info page
+- [ ] Add **React** user info page
+- [ ] Add **Angular** user info page (optional)
+- [ ] Add **Nginx** config
+- [ ] Replace **Nginx** by reverse-proxy web-server
+
+### How to run
+
+TODO
