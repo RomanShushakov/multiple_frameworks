@@ -23,7 +23,7 @@ use tower_http::cors::CorsLayer;
 
 static KEYS: Lazy<Keys> = Lazy::new(|| 
 {
-    let secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set");
+    let secret = std::env::var("JWT_SECRET").unwrap_or("secret".to_string());
     Keys::new(secret.as_bytes())
 });
 
