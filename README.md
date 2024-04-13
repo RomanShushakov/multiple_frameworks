@@ -13,3 +13,12 @@ There are rough mockups of pages, it should be reference for content only, the d
 #### Auth page
 
 ![Image](./docs/images/auth%20page.svg)
+
+
+#### User info page
+
+All user info pages should have the same content and functionality regardless of the framework (Vue, Svelte, React, etc.). You can use arbitrary styles.
+
+##### Fighter info page
+
+![Image](./docs/images/fighter%20info%20page.svg)
