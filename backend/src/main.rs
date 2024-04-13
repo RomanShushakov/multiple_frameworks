@@ -171,7 +171,7 @@ async fn user_info(
         .iter()
         .find(|u| u.name == claims.name && u.email == claims.email)
     {
-        Ok(Json(UserInfo { info: user.info.clone() }))
+        Ok(Json(UserInfo { info: user.info.clone(), role: user.role.clone() }))
     }
     else
     {
@@ -244,6 +244,7 @@ struct User
 struct UserInfo
 {
     info: String,
+    role: String,
 }
 
 
