@@ -9,3 +9,7 @@ There are rough mockups of pages, it should be reference for content only, the d
 #### Start page
 
 ![Image](./docs/images/start%20page.svg)
+
+#### Auth page
+
+![Image](./docs/images/auth%20page.svg)
