@@ -32,8 +32,8 @@ All user info pages should have the same content and functionality regardless of
 
 ### Tasks
 
-- [ ] Add global Vite config
-- [ ] Add start page
+- [X] Add global Vite config
+- [X] Add start page
 - [X] Add auth page
 - [ ] Add **Vue** user info page
 - [ ] Add **Svelte** user info page
