@@ -1,28 +1,102 @@
 <template>
-  <p>Hello User info Vue page</p>
-  <div class="loading-circle"></div>
+  <div class="user-info-vue-wrapper">
+    <div class="header">
+      <a href="./index.html" class="link-secondary">to the start page</a>
+    </div>
+
+    <div class="loading-circle" v-if="!userInfo"></div>
+    <div class="user-info" v-else>
+      <h3>
+        Hello {{ userInfo.name }}
+      </h3>
+      <p>
+        {{ userInfo.info }}
+      </p>
+    </div>
+
+  </div>
 </template>
 
 <script>
-// import { RouterView } from "vue-router";
+  import "bootstrap/dist/css/bootstrap.css";
+  import "bootstrap";
 
-export default {
-  // mounted() {
-  //   this.username = USERNAME;
-  //   this.authLoginUrl = AUTH_LOGIN_URL;
-  //   this.authSignupUrl = AUTH_SIGNUP_URL;
-  //   this.logoutUrl = LOGOUT_URL;
-  //   this.authAccountDetailsUrl = AUTH_ACCOUNT_DETAILS_URL;
-  //   this.toolsUrl = TOOLS_URL;
-  //   this.isLoggedIn = IS_LOGGED_IN;
-  // },
-  // data() {
-  //   return {
-  //     username: null,
-  //     logoutUrl: null,
-  //     authAccountDetailsUrl: null,
-  //     toolsUrl: null,
-  //   }
-  // }
-}
+  export default {
+    data: () => {
+      return {
+        userInfo: null,
+      };
+    },
+
+    created() {
+      this.getUserInfo(import.meta.env.VITE_USER_INFO_URL);
+    },
+
+    mounted() {
+      console.log("Mounted");
+    },
+
+    methods: {
+      async getData(url) {
+        const response = await fetch(url);
+        return response;
+      },
+
+      async getUserInfo(url) {
+        const headers = {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        };
+
+        if (import.meta.env.MODE === "development" && localStorage.getItem("token")) {
+          headers["Authorization"] = localStorage.getItem("token");
+        }
+
+        fetch(url, {
+          method: "GET",
+          mode: "cors",
+          headers,
+        })
+        .then(async (response) => {
+          if (response.status === 200) {
+            this.userInfo = await response.json();
+          } else {
+            this.getData("./login.html").then((response) => {
+              window.location.href = response.url;
+            });
+          }
+        });
+      },
+    }
+  }
 </script>
+
+<style>
+  .user-info-vue-wrapper {
+    margin: 1rem 0 0 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .header {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
+    justify-content: start;
+  }
+
+  .link-secondary {
+    margin: 0 0 0 2rem;
+  }
+
+  .user-info {
+    margin: 0;
+    padding: 1rem 0 0 2rem;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+</style>

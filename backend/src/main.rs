@@ -74,7 +74,11 @@ async fn main()
         .layer(
             CorsLayer::new()
                 .allow_origin(CORS_ORIGIN.parse::<HeaderValue>().unwrap())
-                .allow_headers([header::ACCESS_CONTROL_ALLOW_ORIGIN, header::CONTENT_TYPE]))
+                .allow_headers([
+                    header::ACCESS_CONTROL_ALLOW_ORIGIN,
+                    header::CONTENT_TYPE,
+                    header::AUTHORIZATION,
+                ]))
         .with_state(Arc::clone(&shared_state));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
@@ -171,7 +175,7 @@ async fn user_info(
         .iter()
         .find(|u| u.name == claims.name && u.email == claims.email)
     {
-        Ok(Json(UserInfo { info: user.info.clone(), role: user.role.clone() }))
+        Ok(Json(UserInfo { name: user.name.clone(), info: user.info.clone(), role: user.role.clone() }))
     }
     else
     {
@@ -243,6 +247,7 @@ struct User
 #[derive(Serialize)]
 struct UserInfo
 {
+    name: String,
     info: String,
     role: String,
 }
