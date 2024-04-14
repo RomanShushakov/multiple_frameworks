@@ -131,7 +131,7 @@ async fn users(
     State(state): State<SharedState>,
     claims: Claims,
 )
-    -> Result<Json<Vec<User>>, Response>
+    -> Result<Json<Vec<UserData>>, Response>
 {
     if let None = state
         .read()
@@ -157,7 +157,8 @@ async fn users(
         .iter()
         .cloned()
         .filter(|u| u.role != "boss".to_string())
-        .collect::<Vec<User>>();
+        .map(|u| UserData { name: u.name, email: u.email, is_active: u.is_active })
+        .collect::<Vec<UserData>>();
     Ok(Json(users))
 }
 
@@ -240,6 +241,15 @@ struct User
     role: String,
     info: String,
     password: String,
+    is_active: bool,
+}
+
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+struct UserData
+{
+    name: String,
+    email: String,
     is_active: bool,
 }
 

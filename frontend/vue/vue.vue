@@ -18,6 +18,34 @@
       >
         {{ isParticipantsShown ? "Hide tournament participants" : "Show tournament participants" }}
       </button>
+      <div v-if="isParticipantsShown && participants" class="tournament-participants">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="p in participants">
+              <td>{{ p.name }}</td>
+              <td>{{ p.email }}</td>
+              <td>
+                <button class="btn btn-sm"
+                        v-bind:class="{ 
+                          'btn-danger': p.is_active, 
+                          'btn-success': !p.is_active 
+                        }"
+                >
+                  {{ p.is_active ? "Deactivate" : "Activate" }}  
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
     </div>
 
   </div>
@@ -76,8 +104,33 @@
         });
       },
 
+      async getParticipants(url) {
+        const headers = {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        };
+
+        if (import.meta.env.MODE === "development" && localStorage.getItem("token")) {
+          headers["Authorization"] = localStorage.getItem("token");
+        }
+
+        fetch(url, {
+          method: "GET",
+          mode: "cors",
+          headers,
+        })
+        .then(async (response) => {
+          if (response.status === 200) {
+            this.participants = await response.json();
+          }
+        });
+      },
+
       toggle() {
         this.isParticipantsShown = !this.isParticipantsShown;
+        if (this.isParticipantsShown && !this.participants) {
+          this.getParticipants(import.meta.env.VITE_USERS_URL);
+        }
       }
     }
   }
@@ -106,13 +159,20 @@
 
   .user-info {
     margin: 0;
-    padding: 1rem 0 0 2rem;
+    padding: 1rem 2rem 0 2rem;
     display: flex;
     width: 100%;
     flex-direction: column;
   }
 
-  .btn {
+  .btn-outline-info {
     width: 250px; 
+  }
+
+  .tournament-participants {
+    margin: 1rem 0 0 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
   }
 </style>
