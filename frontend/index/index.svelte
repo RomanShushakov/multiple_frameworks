@@ -12,7 +12,7 @@
 		"./vue.html": vueIcon,
   	"./svelte.html": svelteIcon,
 		"./react.html": reactIcon,
-	}
+	};
 </script>
 
 <div class="wrapper">
