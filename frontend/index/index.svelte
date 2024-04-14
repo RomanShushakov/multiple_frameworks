@@ -1,20 +1,3 @@
-<script>
-  import "bootstrap/dist/css/bootstrap.css";
-  import "bootstrap";
-
-  import viteIcon from "../assets/images/vite-icon.svg";
-
-  import vueIcon from "../assets/images/vue-icon.svg";
-  import svelteIcon from "../assets/images/svelte-icon.svg";
-  import reactIcon from "../assets/images/react-icon.svg";
-
-  const icons = {
-		"./vue.html": vueIcon,
-  	"./svelte.html": svelteIcon,
-		"./react.html": reactIcon,
-	};
-</script>
-
 <div class="wrapper">
   <div class="header">
     <a href="./login.html" class="btn btn-outline-primary">Log In</a> 
@@ -38,8 +21,24 @@
       {/each}
     </div>
   </div>
-
 </div>
+
+<script>
+  import "bootstrap/dist/css/bootstrap.css";
+  import "bootstrap";
+
+  import viteIcon from "../assets/images/vite-icon.svg";
+
+  import vueIcon from "../assets/images/vue-icon.svg";
+  import svelteIcon from "../assets/images/svelte-icon.svg";
+  import reactIcon from "../assets/images/react-icon.svg";
+
+  const icons = {
+		"./vue.html": vueIcon,
+  	"./svelte.html": svelteIcon,
+		"./react.html": reactIcon,
+	};
+</script>
 
 <style>
   .wrapper {

@@ -1,3 +1,45 @@
+<div class="wrapper">
+  <p class="fs-6 fw-semibold">Choose your destiny</p>
+  <form on:submit|preventDefault={handleSubmit} style="width: 15%;">
+    <div class="row mb-3 w-10">
+      <input
+        type="text"
+        class="form-control"
+        class:is-invalid={formErrors.email}
+        placeholder="email@example.com"
+        bind:value={form.email}
+      />
+      <div class="invalid-feedback">{formErrors.email}</div>
+    </div>
+    <div class="row mb-3">
+      <input
+        type="password"
+        class="form-control"
+        class:is-invalid={formErrors.password}
+        placeholder="Password"
+        bind:value={form.password}
+      />
+      <div class="invalid-feedback">{formErrors.password}</div>
+    </div>
+    <div class="row mb-3">
+      <button type="submit" class="btn btn-primary mb-3">Log In</button>
+    </div>
+  </form>
+
+  <div class="row justify-content-center">
+    <span
+      class={successMessage ? "text-success" : "text-danger"}
+      style="margin-bottom: 1rem; display: {successMessage || errorMessage
+        ? 'block'
+        : 'none'};"
+    >
+      {@html successMessage || errorMessage}
+    </span>
+  </div>
+
+  <a href="./index.html" class="link-secondary">to the start page</a>
+</div>
+
 <script>
   import "bootstrap/dist/css/bootstrap.css";
   import "bootstrap";
@@ -117,48 +159,6 @@
     await showMessage(success, message);
   };
 </script>
-
-<div class="wrapper">
-  <p class="fs-6 fw-semibold">Choose your destiny</p>
-  <form on:submit|preventDefault={handleSubmit} style="width: 15%;">
-    <div class="row mb-3 w-10">
-      <input
-        type="text"
-        class="form-control"
-        class:is-invalid={formErrors.email}
-        placeholder="email@example.com"
-        bind:value={form.email}
-      />
-      <div class="invalid-feedback">{formErrors.email}</div>
-    </div>
-    <div class="row mb-3">
-      <input
-        type="password"
-        class="form-control"
-        class:is-invalid={formErrors.password}
-        placeholder="Password"
-        bind:value={form.password}
-      />
-      <div class="invalid-feedback">{formErrors.password}</div>
-    </div>
-    <div class="row mb-3">
-      <button type="submit" class="btn btn-primary mb-3">Log In</button>
-    </div>
-  </form>
-
-  <div class="row justify-content-center">
-    <span
-      class={successMessage ? "text-success" : "text-danger"}
-      style="margin-bottom: 1rem; display: {successMessage || errorMessage
-        ? 'block'
-        : 'none'};"
-    >
-      {@html successMessage || errorMessage}
-    </span>
-  </div>
-
-  <a href="./index.html" class="link-secondary">to the start page</a>
-</div>
 
 <style>
   .wrapper {

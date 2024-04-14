@@ -12,6 +12,12 @@
       <p>
         {{ userInfo.info }}
       </p>
+      <button v-if="userInfo.role === 'boss'" 
+              class="btn btn-outline-info btn-sm"
+              v-on:click="toggle"
+      >
+        {{ isParticipantsShown ? "Hide tournament participants" : "Show tournament participants" }}
+      </button>
     </div>
 
   </div>
@@ -25,6 +31,8 @@
     data: () => {
       return {
         userInfo: null,
+        isParticipantsShown: false,
+        participants: null,
       };
     },
 
@@ -67,6 +75,10 @@
           }
         });
       },
+
+      toggle() {
+        this.isParticipantsShown = !this.isParticipantsShown;
+      }
     }
   }
 </script>
@@ -98,5 +110,9 @@
     display: flex;
     width: 100%;
     flex-direction: column;
+  }
+
+  .btn {
+    width: 250px; 
   }
 </style>
