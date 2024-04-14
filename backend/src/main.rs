@@ -2,7 +2,7 @@ use axum::
 {
     async_trait,
     extract::{FromRequestParts, State},
-    http::{header, request::Parts, HeaderValue, StatusCode},
+    http::{header, request::Parts, HeaderValue, StatusCode, Method},
     response::{IntoResponse, Response},
     routing::{get, patch, post},
     Json, RequestPartsExt, Router,
@@ -78,7 +78,9 @@ async fn main()
                     header::ACCESS_CONTROL_ALLOW_ORIGIN,
                     header::CONTENT_TYPE,
                     header::AUTHORIZATION,
-                ]))
+                ])
+                .allow_methods([Method::GET, Method::POST, Method::PATCH]),
+            )
         .with_state(Arc::clone(&shared_state));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
@@ -105,7 +107,7 @@ async fn login(
         .unwrap()
         .0
         .iter()
-        .find(|u| u.email == payload.email && u.password == payload.password)
+        .find(|u| u.email == payload.email && u.password == payload.password && u.is_active)
     {
         let claims = Claims
         {

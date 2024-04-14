@@ -37,6 +37,7 @@
                           'btn-danger': p.is_active, 
                           'btn-success': !p.is_active 
                         }"
+                        v-on:click="toggleUserStatus(p.email)"
                 >
                   {{ p.is_active ? "Deactivate" : "Activate" }}  
                 </button>
@@ -66,10 +67,6 @@
 
     created() {
       this.getUserInfo(import.meta.env.VITE_USER_INFO_URL);
-    },
-
-    mounted() {
-      console.log("Mounted");
     },
 
     methods: {
@@ -126,10 +123,41 @@
         });
       },
 
+      async updateUserStatus(url, user, status) {
+        const headers = {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        };
+
+        if (import.meta.env.MODE === "development" && localStorage.getItem("token")) {
+          headers["Authorization"] = localStorage.getItem("token");
+        }
+
+        fetch(url, {
+          method: "PATCH",
+          mode: "cors",
+          headers,
+          body: JSON.stringify({ email: user.email, is_active: status }),
+        })
+        .then(async (response) => {
+          if (response.status === 200) {
+            user.is_active = status;
+          }
+        });
+      },
+
       toggle() {
         this.isParticipantsShown = !this.isParticipantsShown;
         if (this.isParticipantsShown && !this.participants) {
           this.getParticipants(import.meta.env.VITE_USERS_URL);
+        }
+      },
+
+      async toggleUserStatus(email) {
+        const user = this.participants.find((u) => u.email === email);
+        if (user) {
+          const newStatus = !user.is_active;
+          this.updateUserStatus(import.meta.env.VITE_UPDATE_USER_STATUS_URL, user, newStatus);
         }
       }
     }
