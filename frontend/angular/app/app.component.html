@@ -1,2 +1,51 @@
-<div class="hello">Hello World!</div>
-<button mat-button color="primary">Button</button>
+<div class="user-info-angular-wrapper">
+  <div class="header">
+    <a href="./index.html" class="link-secondary">to the start page</a>
+  </div>
+
+  <div class="loading-circle" *ngIf="!isUserInfo"></div>
+  <div class="user-info" *ngIf="isUserInfo">
+    <h3>
+      Hello {{ userInfo.name }}
+    </h3>
+    <p>
+      {{ userInfo.info }}
+    </p>
+
+    <button *ngIf="userInfo.role === 'boss'" 
+            mat-stroked-button color="primary" 
+            (click)="toggle()"
+            class="btn-outline-info"
+    >
+      {{ isParticipantsShown ? "Hide tournament participants" : "Show tournament participants" }}
+    </button>
+
+    <div *ngIf="isParticipantsShown && participants.length" class="tournament-participants">
+      <table class="table table-hover">
+        <thead>
+          <tr class="table-row">
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-row" *ngFor="let p of participants">
+            <td>{{ p.name }}</td>
+            <td>{{ p.email }}</td>
+            <td>
+              <button mat-stroked-button 
+                      [color]="p.is_active ? 'warn' : 'primary'" 
+                      class="btn btn-sm"
+                      (click)="toggleUserStatus(p.email)"
+              >
+                {{ p.is_active ? "Deactivate" : "Activate" }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

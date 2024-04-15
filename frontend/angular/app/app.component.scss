@@ -1,3 +1,57 @@
-.hello {
-  background-color: red;
+.user-info-angular-wrapper {
+  margin: 1rem 0 0 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.header {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  justify-content: start;
+}
+
+.link-secondary {
+  color: #6c757d;
+  font-size: 16px;
+  margin: 0 0 0 2rem;
+}
+
+.user-info {
+  margin: 0;
+  padding: 1rem 2rem 0 2rem;
+  display: flex;
+  // width: 100%;
+  flex-direction: column;
+}
+
+.btn-outline-info {
+  width: 300px; 
+}
+
+.tournament-participants {
+  margin: 1rem 0 0 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+}
+
+.table {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.table-row {
+  margin: 0 0 20px 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
 }
