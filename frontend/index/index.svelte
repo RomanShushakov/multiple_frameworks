@@ -31,12 +31,12 @@
 
   import vueIcon from "../assets/images/vue-icon.svg";
   import svelteIcon from "../assets/images/svelte-icon.svg";
-  import reactIcon from "../assets/images/react-icon.svg";
+  import angularIcon from "../assets/images/angular-icon.svg";
 
   const icons = {
 		"./vue.html": vueIcon,
   	"./svelte.html": svelteIcon,
-		"./react.html": reactIcon,
+    "./angular.html": angularIcon,
 	};
 </script>
 

@@ -1,31 +1,38 @@
 {
-    "name": "frontend",
-    "private": true,
-    "version": "0.1.0",
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "build:dev": "vite build --mode development",
-        "watch": "vite build --watch",
-        "serve-json": "json-server --watch db.json --port 3001"
-    },
-    "devDependencies": {
-        "@sveltejs/vite-plugin-svelte": "3.1.0",
-        "@vitejs/plugin-react": "4.2.1",
-        "@vitejs/plugin-vue": "5.0.4",
-        "ajv": "8.12.0",
-        "ajv-formats": "3.0.1",
-        "bootstrap": "5.3.3",
-        "json-server": "1.0.0-alpha.23",
-        "react": "18.2.0",
-        "react-bootstrap": "^2.10.2",
-        "react-dom": "^18.2.0",
-        "react-router-dom": "^6.22.3",
-        "react-toastify": "^10.0.5",
-        "svelte": "4.2.14",
-        "vite": "5.2.8",
-        "vite-imagetools": "7.0.1",
-        "vue": "3.4.21"
-    }
+  "name": "frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "watch": "vite build --watch"
+  },
+  "dependencies": {
+    "@angular/animations": "17.3.4",
+    "@angular/cdk": "17.3.4",
+    "@angular/common": "17.3.4",
+    "@angular/compiler": "17.3.4",
+    "@angular/core": "17.3.4",
+    "@angular/material": "17.3.4",
+    "@angular/platform-browser": "17.3.4",
+    "@angular/platform-browser-dynamic": "17.3.4",
+    "rxjs": "7.8.1",
+    "zone.js": "0.14.4"
+  },
+  "devDependencies": {
+    "@nitedani/vite-plugin-angular": "17.0.11",
+    "@sveltejs/vite-plugin-svelte": "3.1.0",
+    "@vitejs/plugin-vue": "5.0.4",
+    "ajv": "8.12.0",
+    "ajv-formats": "3.0.1",
+    "bootstrap": "5.3.3",
+    "sass": "1.75.0",
+    "svelte": "4.2.14",
+    "typescript": "5.4.5",
+    "vite": "5.2.8",
+    "vite-imagetools": "7.0.1",
+    "vue": "3.4.21"
+  }
 }
