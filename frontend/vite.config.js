@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { imagetools } from "vite-imagetools";
 import vue from "@vitejs/plugin-vue";
+import react from "@vitejs/plugin-react";
 
 
 export default defineConfig({
@@ -25,5 +26,6 @@ export default defineConfig({
     svelte(),
     imagetools(),
     vue(),
+    react(),
   ],
 });
