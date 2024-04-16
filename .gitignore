@@ -2,5 +2,8 @@ backend/target
 backend/Cargo.lock
 
 frontend/node_modules
-frontend/public
 frontend/package-lock.json
+
+frontend/web_server/target
+frontend/web_server/Cargo.lock
+frontend/web_server/static/client
