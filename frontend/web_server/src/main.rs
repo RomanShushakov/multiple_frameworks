@@ -62,7 +62,7 @@ async fn main()
     let session_store = MemoryStore::default();
     let session_layer = SessionManagerLayer::new(session_store)
         .with_secure(false)
-        .with_expiry(Expiry::OnInactivity(TDuration::seconds(1000)))
+        .with_expiry(Expiry::OnInactivity(TDuration::minutes(180)))
         .with_signed(key);
 
     let app = Router::new()
@@ -124,6 +124,10 @@ async fn login(
     {
         Ok(res) => 
         {
+            if res.status() == 401
+            {
+                return Err(StatusCode::BAD_REQUEST);
+            }
             extract_token(res, session).await;
             Ok((StatusCode::OK, "ok").into_response()) 
         },
