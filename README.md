@@ -41,7 +41,7 @@ All user info pages should have the same content and functionality regardless of
 - [X] Add **Angular** user info page (optional)
 - [ ] ~~Add **Nginx** config~~
 - [ ] ~~Replace **Nginx** by reverse-proxy web-server~~
-- [X] Add proxy web
+- [X] Add proxy web server
 
 ### How to run
 
