@@ -21,14 +21,16 @@ const Home = () => {
     const [showTable, setShowTable] = useState(false);
 
     useEffect(() => {
-        if (localStorage.getItem("token") === null) {
-            getData('/login.html').then((response) => {
-              window.location.href = response.url;
-            });
-        } else {
-           getUserInfo(import.meta.env.VITE_USER_INFO_URL)
-           getParticipants(import.meta.env.VITE_USERS_URL)
-        }
+        // if (localStorage.getItem("token") === null) {
+        //     getData('/login.html').then((response) => {
+        //       window.location.href = response.url;
+        //     });
+        // } else {
+        //    getUserInfo(import.meta.env.VITE_USER_INFO_URL)
+        //    getParticipants(import.meta.env.VITE_USERS_URL)
+        // }
+        getUserInfo(import.meta.env.VITE_USER_INFO_URL)
+        getParticipants(import.meta.env.VITE_USERS_URL)
     }, []);
 
     function getUserInfo(url) {
