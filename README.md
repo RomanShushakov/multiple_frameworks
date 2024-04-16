@@ -38,9 +38,10 @@ All user info pages should have the same content and functionality regardless of
 - [X] Add **Vue** user info page
 - [X] Add **Svelte** user info page
 - [X] Add **React** user info page
-- [ ] Add **Angular** user info page (optional)
-- [ ] Add **Nginx** config
-- [ ] Replace **Nginx** by reverse-proxy web-server
+- [X] Add **Angular** user info page (optional)
+- [ ] ~~Add **Nginx** config~~
+- [ ] ~~Replace **Nginx** by reverse-proxy web-server~~
+- [X] Add proxy web
 
 ### How to run
 
