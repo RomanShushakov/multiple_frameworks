@@ -1,31 +1,45 @@
 use axum::
 {
-    body::{Body, Bytes}, 
+    body::Body, 
     extract::{Request, State}, 
-    handler::HandlerWithoutStateExt, 
     http::StatusCode, 
     response::{IntoResponse, Response}, 
-    routing::{get, post}, 
+    routing::{get, post, patch}, 
     Json, 
     Router,
 };
-use hyper::{body::Body as HBody, Uri};
+use axum_macros::debug_handler;
+use hyper::Uri;
 use hyper_util::{client::legacy::connect::HttpConnector, rt::TokioExecutor};
-use tracing::Instrument;
-use std::{collections::HashMap, net::SocketAddr};
-use tower::ServiceExt;
 use tower_http::
 {
-    services::{ServeDir, ServeFile},
+    services::ServeDir,
     trace::TraceLayer,
 };
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use serde::{Deserialize, Serialize};
-
 use http_body_util::BodyExt;
+use time::Duration as TDuration;
+use tower_sessions::{cookie::Key, Expiry, MemoryStore, Session, SessionManagerLayer};
+use http::header::{HeaderValue, AUTHORIZATION};
+use once_cell::sync::Lazy;
 
 
 type Client = hyper_util::client::legacy::Client<HttpConnector, Body>;
+
+
+const TOKEN_KEY: &str = "token";
+
+
+static SERVER_ADDR: Lazy<String> = Lazy::new(|| 
+{
+    let server_addr = std::env::var("SERVER_ADDR").unwrap_or("http://localhost:3000".to_string());
+    server_addr
+});
+
+
+#[derive(Default, Deserialize, Serialize)]
+struct Token(String);
 
 
 #[tokio::main]
@@ -43,26 +57,23 @@ async fn main()
         hyper_util::client::legacy::Client::<(), ()>::builder(TokioExecutor::new())
             .build(HttpConnector::new());
 
+    let key = Key::generate(); // This is only used for demonstration purposes; provide a proper
+                                    // cryptographic key in a real application.
+    let session_store = MemoryStore::default();
+    let session_layer = SessionManagerLayer::new(session_store)
+        .with_secure(false)
+        .with_expiry(Expiry::OnInactivity(TDuration::seconds(1000)))
+        .with_signed(key);
+
     let app = Router::new()
         .route("/login", post(login))
+        .route("/user_info", get(handler))
+        .route("/users", get(handler))
+        .route("/update_user_status", patch(handler))
         .nest_service("/", ServeDir::new("static/client"))
         .layer(TraceLayer::new_for_http())
+        .layer(session_layer)
         .with_state(client);
-        // .route("/login", post(login))
-        // .route("/users", get(users))
-        // .route("/user_info", get(user_info))
-        // .route("/update_user_status", patch(update_user_status))
-        // .layer(
-        //     CorsLayer::new()
-        //         .allow_origin(CORS_ORIGIN.parse::<HeaderValue>().unwrap())
-        //         .allow_headers([
-        //             header::ACCESS_CONTROL_ALLOW_ORIGIN,
-        //             header::CONTENT_TYPE,
-        //             header::AUTHORIZATION,
-        //         ])
-        //         .allow_methods([Method::GET, Method::POST, Method::PATCH]),
-        //     )
-        // .with_state(Arc::clone(&shared_state));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:5001")
         .await
@@ -74,6 +85,7 @@ async fn main()
 
 async fn extract_token(
     res: Response<hyper::body::Incoming>,
+    session: Session,
 ) 
 {
     let auth_body = Json::<AuthBody>::from_bytes(
@@ -82,12 +94,15 @@ async fn extract_token(
 
     let token = format!("{} {}", auth_body.token_type, auth_body.access_token);
 
-    println!("{:?}", token);
+    // Put token in Memory Store
+    session.insert(TOKEN_KEY, token).await.unwrap();
 }
 
 
+#[debug_handler]
 async fn login(
     State(client): State<Client>, 
+    session: Session,
     mut req: Request,
 ) 
     -> Result<Response, StatusCode>
@@ -99,124 +114,55 @@ async fn login(
         .map(|v| v.as_str())
         .unwrap_or(path);
 
-    let uri = format!("http://127.0.0.1:3000{}", path_query);
+    let uri = format!("{}{}", SERVER_ADDR.parse::<String>().unwrap(), path_query);
 
     *req.uri_mut() = Uri::try_from(uri).unwrap();
 
-    let res = match client
+    match client
         .request(req)
         .await
     {
-        Ok(r) => 
+        Ok(res) => 
         {
-            extract_token(r).await;
+            extract_token(res, session).await;
             Ok((StatusCode::OK, "ok").into_response()) 
         },
         Err(_e) => 
         {
             Err(StatusCode::BAD_REQUEST)
         },
-    };
-
-    res
+    }
 }
 
 
-// fn using_serve_dir() -> Router 
-// {
-//     // serve the file in the "assets" directory under `/assets`
-//     Router::new().nest_service("/assets", ServeDir::new("assets"))
-// }
+async fn handler(
+    State(client): State<Client>, 
+    session: Session,
+    mut req: Request,
+) 
+    -> Result<Response, StatusCode>
+{
+    let token: Token = session.get(TOKEN_KEY).await.unwrap().unwrap_or_default();
 
+    let path = req.uri().path();
+    let path_query = req
+        .uri()
+        .path_and_query()
+        .map(|v| v.as_str())
+        .unwrap_or(path);
 
-// fn using_serve_dir_with_assets_fallback() -> Router 
-// {
-//     // `ServeDir` allows setting a fallback if an asset is not found
-//     // so with this `GET /assets/doesnt-exist.jpg` will return `index.html`
-//     // rather than a 404
-//     let serve_dir = ServeDir::new("assets").not_found_service(ServeFile::new("assets/index.html"));
+    let uri = format!("{}{}", SERVER_ADDR.parse::<String>().unwrap(), path_query);
 
-//     Router::new()
-//         .route("/foo", get(|| async { "Hi from /foo" }))
-//         .nest_service("/assets", serve_dir.clone())
-//         .fallback_service(serve_dir)
-// }
+    *req.uri_mut() = Uri::try_from(uri).unwrap();
+    req.headers_mut().insert(AUTHORIZATION,  HeaderValue::from_str(&token.0).unwrap());
 
-
-// fn using_serve_dir_only_from_root_via_fallback() -> Router 
-// {
-//     // you can also serve the assets directly from the root (not nested under `/assets`)
-//     // by only setting a `ServeDir` as the fallback
-//     let serve_dir = ServeDir::new("assets").not_found_service(ServeFile::new("assets/index.html"));
-
-//     Router::new()
-//         .route("/foo", get(|| async { "Hi from /foo" }))
-//         .fallback_service(serve_dir)
-// }
-
-
-// fn using_serve_dir_with_handler_as_service() -> Router 
-// {
-//     async fn handle_404() -> (StatusCode, &'static str) 
-//     {
-//         (StatusCode::NOT_FOUND, "Not found")
-//     }
-
-//     // you can convert handler function to service
-//     let service = handle_404.into_service();
-
-//     let serve_dir = ServeDir::new("assets").not_found_service(service);
-
-//     Router::new()
-//         .route("/foo", get(|| async { "Hi from /foo" }))
-//         .fallback_service(serve_dir)
-// }
-
-
-// fn two_serve_dirs() -> Router 
-// {
-//     // you can also have two `ServeDir`s nested at different paths
-//     let serve_dir_from_assets = ServeDir::new("assets");
-//     let serve_dir_from_dist = ServeDir::new("dist");
-
-//     Router::new()
-//         .nest_service("/assets", serve_dir_from_assets)
-//         .nest_service("/dist", serve_dir_from_dist)
-// }
-
-
-// #[allow(clippy::let_and_return)]
-// fn calling_serve_dir_from_a_handler() -> Router 
-// {
-//     // via `tower::Service::call`, or more conveniently `tower::ServiceExt::oneshot` you can
-//     // call `ServeDir` yourself from a handler
-//     Router::new().nest_service(
-//         "/foo",
-//         get(|request: Request| async 
-//         {
-//             let service = ServeDir::new("assets");
-//             let result = service.oneshot(request).await;
-//             result
-//         }),
-//     )
-// }
-
-
-// fn using_serve_file_from_a_route() -> Router 
-// {
-//     Router::new().route_service("/foo", ServeFile::new("assets/index.html"))
-// }
-
-
-// async fn serve(app: Router, port: u16) 
-// {
-//     let addr = SocketAddr::from(([127, 0, 0, 1], port));
-//     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-//     tracing::debug!("listening on {}", listener.local_addr().unwrap());
-//     axum::serve(listener, app.layer(TraceLayer::new_for_http()))
-//         .await
-//         .unwrap();
-// }
+    Ok(client
+        .request(req)
+        .await
+        .map_err(|_| StatusCode::BAD_REQUEST)?
+        .into_response()
+    )
+}
 
 
 #[derive(Debug, Serialize, Deserialize)]
