@@ -4,7 +4,7 @@
         "email": "shang.tsung@mk.com",
         "role": "boss",
         "info": "A powerful, soul-stealing sorcerer, Shang Tsung is a celebrated villain of the series and served as the host for the traditional Mortal Kombat tournament in the original and alternate timelines.",
-        "password": "!QWERTYytrewq12345",
+        "password": "12345",
         "is_active": true
     },
     {
@@ -12,7 +12,7 @@
         "email": "kung.lao@mk.com",
         "role": "fighter",
         "info": "Kung Lao is a former Shaolin monk and a member of the White Lotus Society. He stands in the shadow of his great ancestor, the Great Kung Lao, but unlike his great ancestor, he has no desire to be champion and would rather live a life of peace.",
-        "password": "!QWERTYytrewq123456",
+        "password": "12345",
         "is_active": true
     },
     {
@@ -20,7 +20,7 @@
         "email": "liu.kang@mk.com",
         "role": "fighter",
         "info": "A former Shaolin Monk and undisputed champion of the Mortal Kombat Tournament, he is the eternal God of Fire, protector of Earthrealm, and the former Keeper of Time.",
-        "password": "!QWERTYytrewq1234567",
+        "password": "12345",
         "is_active": true
     },
     {
@@ -28,7 +28,7 @@
         "email": "sub.zero@mk.com",
         "role": "fighter",
         "info": "He takes the mantle of Sub-Zero in his later appearances in the series but reappears under his original alias of Tundra in Mortal Kombat (2011) before again going under the mantle of Sub-Zero.",
-        "password": "!QWERTYytrewq12345678",
+        "password": "12345",
         "is_active": true
     },
     {
@@ -36,7 +36,7 @@
         "email": "noob.saibot@mk.com",
         "role": "fighter",
         "info": "Bi-Han made his debut as Noob Saibot in Mortal Kombat II as a secret character, a role he takes on in many games after before making his playable debut in Ultimate Mortal Kombat 3.",
-        "password": "!QWERTYytrewq123456789",
+        "password": "12345",
         "is_active": true
     }
 ]
