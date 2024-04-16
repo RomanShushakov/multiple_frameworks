@@ -10,7 +10,7 @@ export default defineConfig({
     port: 5001,
   },
   build: {
-    outDir: "./public",   // by some reason will build into ./public/client folder
+    outDir: "./web_server/static",    // by some reason will build into ./web_server/static/client folder
     assetsDir: "./assets",
     rollupOptions: {
       input: {
