@@ -1,10 +1,10 @@
 use axum::
 {
     body::Body, 
-    extract::{Request, State}, 
+    extract::{Request, State, Path}, 
     http::StatusCode, 
     response::{IntoResponse, Response}, 
-    routing::{get, post, patch}, 
+    routing::get, 
     Json, 
     Router,
 };
@@ -66,10 +66,7 @@ async fn main()
         .with_signed(key);
 
     let app = Router::new()
-        .route("/login", post(login))
-        .route("/user_info", get(handler))
-        .route("/users", get(handler))
-        .route("/update_user_status", patch(handler))
+        .route("/user/*req_path", get(handler).post(handler).patch(handler))
         .nest_service("/", ServeDir::new("static/client"))
         .layer(TraceLayer::new_for_http())
         .layer(session_layer)
@@ -100,72 +97,56 @@ async fn extract_token(
 
 
 #[debug_handler]
-async fn login(
-    State(client): State<Client>, 
-    session: Session,
-    mut req: Request,
-) 
-    -> Result<Response, StatusCode>
-{
-    let path = req.uri().path();
-    let path_query = req
-        .uri()
-        .path_and_query()
-        .map(|v| v.as_str())
-        .unwrap_or(path);
-
-    let uri = format!("{}{}", SERVER_ADDR.parse::<String>().unwrap(), path_query);
-
-    *req.uri_mut() = Uri::try_from(uri).unwrap();
-
-    match client
-        .request(req)
-        .await
-    {
-        Ok(res) => 
-        {
-            if res.status() == 401
-            {
-                return Err(StatusCode::BAD_REQUEST);
-            }
-            extract_token(res, session).await;
-            Ok((StatusCode::OK, "ok").into_response()) 
-        },
-        Err(_e) => 
-        {
-            Err(StatusCode::BAD_REQUEST)
-        },
-    }
-}
-
-
 async fn handler(
+    Path(req_path): Path<String>,
     State(client): State<Client>, 
     session: Session,
     mut req: Request,
 ) 
     -> Result<Response, StatusCode>
 {
-    let token: Token = session.get(TOKEN_KEY).await.unwrap().unwrap_or_default();
-
     let path = req.uri().path();
     let path_query = req
         .uri()
         .path_and_query()
         .map(|v| v.as_str())
         .unwrap_or(path);
-
     let uri = format!("{}{}", SERVER_ADDR.parse::<String>().unwrap(), path_query);
-
     *req.uri_mut() = Uri::try_from(uri).unwrap();
-    req.headers_mut().insert(AUTHORIZATION,  HeaderValue::from_str(&token.0).unwrap());
 
-    Ok(client
-        .request(req)
-        .await
-        .map_err(|_| StatusCode::BAD_REQUEST)?
-        .into_response()
-    )
+    if req_path == "login".to_string()
+    {
+        match client
+            .request(req)
+            .await
+        {
+            Ok(res) => 
+            {
+                if res.status() == 401
+                {
+                    return Err(StatusCode::BAD_REQUEST);
+                }
+                extract_token(res, session).await;
+                Ok((StatusCode::OK, "You have successfully logged in!").into_response())
+            },
+            Err(_e) => 
+            {
+                Err(StatusCode::BAD_REQUEST)
+            },
+        }
+    }
+    else
+    {
+        let token: Token = session.get(TOKEN_KEY).await.unwrap().unwrap_or_default();
+        req.headers_mut().insert(AUTHORIZATION,  HeaderValue::from_str(&token.0).unwrap());
+    
+        Ok(client
+            .request(req)
+            .await
+            .map_err(|_| StatusCode::BAD_REQUEST)?
+            .into_response()
+        )
+    }
 }
 
 
