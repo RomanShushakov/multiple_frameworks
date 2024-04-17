@@ -67,10 +67,10 @@ async fn main()
     let shared_state = Arc::new(RwLock::new(AppState::init()));
 
     let app = Router::new()
-        .route("/login", post(login))
-        .route("/users", get(users))
-        .route("/user_info", get(user_info))
-        .route("/update_user_status", patch(update_user_status))
+        .route("/user/login", post(login))
+        .route("/user/users", get(users))
+        .route("/user/info", get(info))
+        .route("/user/update_status", patch(update_status))
         .layer(
             CorsLayer::new()
                 .allow_origin(CORS_ORIGIN.parse::<HeaderValue>().unwrap())
@@ -165,7 +165,7 @@ async fn users(
 }
 
 
-async fn user_info(
+async fn info(
     State(state): State<SharedState>,
     claims: Claims,
 )
@@ -195,7 +195,7 @@ async fn user_info(
 
 
 
-async fn update_user_status(
+async fn update_status(
     State(state): State<SharedState>,
     claims: Claims,
     Json(payload): Json<UserStatus>,
