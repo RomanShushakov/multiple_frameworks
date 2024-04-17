@@ -45,4 +45,37 @@ All user info pages should have the same content and functionality regardless of
 
 ### How to run
 
-TODO
+#### Prod
+
+- `docker compose up`
+- go to <http://localhost:5001>
+
+#### Dev
+
+##### Prerequisites
+
+**Rust**, **npm**
+
+##### to work on frontend
+
+- `docker compose -f docker-compose-dev.yaml up`
+- `cd ./frontend`
+- `npm run dev`
+- go to <http://localhost:5001>
+
+##### to work on web-server
+
+- `docker compose -f docker-compose-dev.yaml up`
+- `cd ./frontend`
+- `npm run build`
+- `cd ./web_server`
+- `cargo run`
+- go to <http://localhost:5001>
+
+##### to work on backend
+
+- `cd ./backend`
+- `cargo run`
+- go to <http://localhost:3000>
+
+P.S. **GLHF!** :thumbsup:
