@@ -5,7 +5,7 @@ services:
     container_name: app_backend
     environment:
       JWT_SECRET: secret
-      CORS_ORIGIN: http://localhost:5001
+      CORS_ORIGIN: http://app_frontend:5001
     networks:
       - app-tier
     ports:
@@ -13,6 +13,20 @@ services:
     volumes:
       - ./backend/db:/app/db
     command: backend
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: app_frontend
+    environment:
+      SERVER_ADDR: http://app_backend:3000
+    networks:
+      - app-tier
+    ports:
+      - 5001:5001
+    depends_on:
+      - backend
+    command: web_server
 
 networks:
   app-tier:
