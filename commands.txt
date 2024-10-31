@@ -1,0 +1,15 @@
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+For dev mode:
+fastapi dev app/main.py
+
+For prod mode:
+fastapi run app/main.py
+
+
+ctrl + shift + p
+python: select interpreter

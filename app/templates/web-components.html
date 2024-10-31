@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Components</title>
+  <script type="module" src="/app/static/web-components/index.js" defer></script>
+</head>
+
+<body>
+  <div>
+    Hello Web Components
+  </div>
+
+  <div>
+    <my-element id="elem" hour="numeric" minute="numeric" second="numeric" time-zone="{{ time_zone }}"></my-element>
+  </div>
+
+  <script>
+    setInterval(() => {
+      elem.setAttribute('datetime', new Date());
+    },
+    1000); // (5)
+  </script>
+</body>
+
+</html>
