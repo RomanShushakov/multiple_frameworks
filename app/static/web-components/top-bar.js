@@ -55,7 +55,6 @@ class TopBar extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["lang"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

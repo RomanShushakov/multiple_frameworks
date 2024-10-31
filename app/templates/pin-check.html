@@ -13,8 +13,8 @@
     const TRANSLATIONS = JSON.parse('{{ translations | tojson }}');
 
     document.addEventListener("selectLanguage", (event) => {
-      const topBarElement = document.querySelector("top-bar");
-      topBarElement.setAttribute("lang", event.detail.lang);
+      const pinCheckFormElement = document.querySelector("pin-check-form");
+      pinCheckFormElement.setAttribute("lang", event.detail.lang);
       event.stopPropagation();
     });
   </script>
@@ -22,6 +22,7 @@
 
 <body>
   <top-bar lang="{{ default_language }}"></top-bar>
+  <pin-check-form lang="{{ default_language }}"></pin-check-form>
 </body>
 
 </html>
