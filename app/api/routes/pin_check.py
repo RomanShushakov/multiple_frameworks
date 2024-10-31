@@ -25,5 +25,10 @@ for lang in language_list:
 @router.get("/", response_class=HTMLResponse)
 async def read_pin_check(request: Request):          
     return templates.TemplateResponse(
-        request=request, name="pin-check.html", context={"translations": translations},
+        request=request, 
+        name="pin-check.html",
+        context={
+            "translations": translations,
+            "default_language": default_language,
+        },
     )
