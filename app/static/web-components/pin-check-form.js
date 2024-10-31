@@ -91,8 +91,44 @@ class PinCheckForm extends HTMLElement {
     this.shadowRoot.querySelector(".check-button").innerHTML = TRANSLATIONS[lang].checkButton;
   }
 
+  async postData(url = "", data = {}) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    return response;
+  }
+
   onCheckButtonClick() {
-    console.log("Click");
+    const companyId = this.shadowRoot.getElementById("companyId").value;
+    const customerId = this.shadowRoot.getElementById("customerId").value;
+    const pin = this.shadowRoot.getElementById("pin").value;
+
+    const requestBody = { company_id: companyId, customer_id: customerId, pin };
+
+    this.postData("/api/v1/pin-check/check", requestBody)
+      .then((response) => {
+        if (response.ok) {
+          response.json()
+            .then((data) => {
+              this.dispatchEvent(new CustomEvent("usersListResponse", {
+                bubbles: true,
+                composed: true,
+                detail: {
+                  "users": data,
+                }
+              }));
+            })
+        } else {
+          this.dispatchEvent(new CustomEvent("usersListResponseError", {
+            bubbles: true,
+            composed: true,
+          }));
+        }
+      });
   }
 }
 

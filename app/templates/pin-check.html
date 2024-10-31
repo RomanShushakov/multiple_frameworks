@@ -17,6 +17,17 @@
       pinCheckFormElement.setAttribute("lang", event.detail.lang);
       event.stopPropagation();
     });
+
+    document.addEventListener("usersListResponse", (event) => {
+      const pinCheckFormElement = document.querySelector("pin-check-form");
+      console.log(event.detail.users);
+      event.stopPropagation();
+    });
+
+    document.addEventListener("usersListResponseError", (event) => {
+      alert("ERROR!!!");
+      event.stopPropagation();
+    });
   </script>
 </head>
 
