@@ -2,5 +2,6 @@
     "companyId": "Company ID",
     "customerId": "Customer ID",
     "pin": "PIN",
-    "checkButton": "Check" 
+    "checkButton": "Check",
+    "usersList": "List of users:"
 }

@@ -15,16 +15,22 @@
     document.addEventListener("selectLanguage", (event) => {
       const pinCheckFormElement = document.querySelector("pin-check-form");
       pinCheckFormElement.setAttribute("lang", event.detail.lang);
+
+      const usersListElement = document.querySelector("users-list");
+      usersListElement.setAttribute("lang", event.detail.lang);
+
       event.stopPropagation();
     });
 
     document.addEventListener("usersListResponse", (event) => {
-      const pinCheckFormElement = document.querySelector("pin-check-form");
-      console.log(event.detail.users);
+      const usersListElement = document.querySelector("users-list");
+      usersListElement.setAttribute("users", JSON.stringify(event.detail.users));
       event.stopPropagation();
     });
 
     document.addEventListener("usersListResponseError", (event) => {
+      const usersListElement = document.querySelector("users-list");
+      usersListElement.setAttribute("users", JSON.stringify([]));
       alert("ERROR!!!");
       event.stopPropagation();
     });
@@ -34,6 +40,7 @@
 <body>
   <top-bar lang="{{ default_language }}"></top-bar>
   <pin-check-form lang="{{ default_language }}"></pin-check-form>
+  <users-list lang="{{ default_language }}"></users-list>
 </body>
 
 </html>
