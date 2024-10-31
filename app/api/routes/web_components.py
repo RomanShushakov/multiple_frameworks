@@ -12,9 +12,7 @@ templates = Jinja2Templates(directory="app/templates")
 @router.get("/{time_zone}", response_class=HTMLResponse)
 async def read_web_components(request: Request, time_zone: str):
     converted_timezone = "Europe/Berlin"
-    
-    print(time_zone)
-    
+        
     if time_zone == "aus":
         converted_timezone = "Australia/Sydney"
     
