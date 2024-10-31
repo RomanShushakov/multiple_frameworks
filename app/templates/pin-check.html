@@ -5,18 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIN check</title>
-  <!-- <script type="module" src="/app/static/web-components/index.js" defer></script> -->
+  <!-- import web components -->
+  <script type="module" src="/app/static/web-components/index.js" defer></script>
+
+  <!-- import context from server -->
+  <script defer>
+    const TRANSLATIONS = JSON.parse('{{ translations | tojson }}');
+
+    document.addEventListener("selectLanguage", (event) => {
+      const topBarElement = document.querySelector("top-bar");
+      topBarElement.setAttribute("lang", event.detail.lang);
+      event.stopPropagation();
+    });
+  </script>
 </head>
 
 <body>
-  <div>
-    {{ default_language }}
-  </div>
-
-  <script>
-    const translations = JSON.parse('{{ translations | tojson }}');
-    console.log(translations);
-  </script>
+  <top-bar lang="{{ default_language }}"></top-bar>
 </body>
 
 </html>
