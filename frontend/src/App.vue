@@ -1,6 +1,20 @@
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue'
+// external imports
+import { ref } from 'vue';
+
+// internal imports
 import TopBar from './components/TopBar.vue';
+import PinCheckForm from './components/PinCheckForm.vue';
+
+const usersList = ref([]);
+
+const onUpdateUsersList = (users) => {
+  usersList.value = users;
+};
+
+const onUsersListError = () => {
+  alert("ERROR!!!");
+};
 </script>
 
 <template>
@@ -14,6 +28,13 @@ import TopBar from './components/TopBar.vue';
   </div> -->
   <!-- <HelloWorld msg="Vite + Vue" /> -->
   <TopBar />
+  <PinCheckForm 
+    @update-users-list="onUpdateUsersList($event.users)"
+    @users-list-response-error="onUsersListError"
+  />
+  <div v-for="user in usersList">
+    {{ user }}
+  </div>
 </template>
 
 <style scoped></style>

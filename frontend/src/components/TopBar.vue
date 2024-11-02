@@ -1,12 +1,11 @@
 <script setup>
 // external imports
 import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
 
 // internal imports
 import { SUPPORT_LOCALES } from '../i18n.js';
 
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 </script>
 
 <template>
