@@ -1,7 +1,15 @@
 # external imports
+from pydantic import AnyUrl, BeforeValidator, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Literal
+from typing import Annotated, Any, Literal
 
+
+def parse_cors(v: Any) -> list[str] | str:
+    if isinstance(v, str) and not v.startswith("["):
+        return [i.strip() for i in v.split(",")]
+    elif isinstance(v, list | str):
+        return v
+    raise ValueError(v)
 
 # TODO: add proper config (see https://github.com/fastapi/full-stack-fastapi-template at backend/app/core/config.py)
 class Settings(BaseSettings):
@@ -14,5 +22,17 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     API_V1_STR: str = "/api/v1"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
+    
+    FRONTEND_HOST: str = "http://localhost:4200"
+    BACKEND_CORS_ORIGINS: Annotated[
+        list[AnyUrl] | str, BeforeValidator(parse_cors)
+    ] = []
+    
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def all_cors_origins(self) -> list[str]:
+        return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [
+            self.FRONTEND_HOST
+        ]
 
 settings = Settings()  # type: ignore
