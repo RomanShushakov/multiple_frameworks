@@ -14,10 +14,10 @@ defineProps({
 
 <template>
   <div class=wrapper>
-    <div class="users-list-container" v-if="users && users.length !== 0">
-      <div name="users-label" class="user-name-label-container">{{ t('usersList') }}</div>
-      <div name="users" v-for="user in users">{{ user }}</div>
-    </div>
+    <ul class="list-group" v-if="users && users.length !== 0">
+      <li class="list-group-item user-name-label">{{ t('usersList') }}</li>
+      <li class="list-group-item" v-for="user in users">{{ user }}</li>
+    </ul>
   </div>
 </template>
 
@@ -40,8 +40,11 @@ defineProps({
   align-items: center;
 }
 
-.user-name-label-container {
-  font-size: 16px;
+.list-group {
+  width: 30%;
+}
+
+.user-name-label {
   font-weight: 600;
 }
 </style>

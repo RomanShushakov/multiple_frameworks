@@ -11,7 +11,7 @@ const { locale } = useI18n();
 <template>
   <div class=wrapper>
     <div class="lang-select-container">
-      <select class="lang-select" v-model="locale">
+      <select class="form-select form-select-sm" v-model="locale">
         <option v-for="optionLocale in SUPPORT_LOCALES" :key="optionLocale" :value="optionLocale">
           {{ optionLocale }}
         </option>
@@ -38,7 +38,8 @@ const { locale } = useI18n();
   justify-content: end;
 }
 
-.lang-select {
+.form-select {
   border: hidden;
+  width: 70px;
 }
 </style>

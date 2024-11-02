@@ -44,15 +44,23 @@ const onCheckButtonClick = () => {
 
 <template>
   <div class=wrapper>
-    <div class="pin-check-form">
-      <label class="company-id-label" for="companyId">{{ t('companyId') }}</label>
-      <input type="text" id="companyId" name="companyId" v-model="formData.company_id">
-      <label class="customer-id-label" for="customerId">{{ t('customerId') }}</label>
-      <input type="text" id="customerId" name="customerId" v-model="formData.customer_id">
-      <label class="pin-label" for="pin">{{ t('pin') }}</label>
-      <input type="text" id="pin" name="pin" v-model="formData.pin">
-      <button class="check-button" type="button" v-on:click="onCheckButtonClick">{{ t('checkButton') }}</button>
-    </div>
+    <form>
+      <div class="mb-3">
+        <label for="companyId" class="form-label">{{ t('companyId') }}</label>
+        <input type="text" class="form-control" id="companyId" v-model="formData.company_id">
+      </div>
+      <div class="mb-3">
+        <label for="customerId" class="form-label">{{ t('customerId') }}</label>
+        <input type="text" class="form-control" id="customerId" v-model="formData.customer_id">
+      </div>
+      <div class="mb-3">
+        <label for="pin" class="form-label">{{ t('pin') }}</label>
+        <input type="text" class="form-control" id="pin" v-model="formData.pin">
+      </div>
+      <div class="button-container">
+        <button type="button" class="btn btn-primary" v-on:click="onCheckButtonClick">{{ t('checkButton') }}</button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -66,26 +74,12 @@ const onCheckButtonClick = () => {
   align-items: center;
 }
 
-.pin-check-form {
-  display: flex;
-  flex-direction: column;
+.button-container {
   margin: 0;
   padding: 0;
+  display: flex;
   width: 100%;
+  flex-direction: column;
   align-items: center;
-}
-
-input {
-  margin: 0 0 10px 0;
-  padding: 0;
-  height: 20px;
-  width: 250px;
-}
-
-button {
-  margin: 10px 0 0 0;
-  padding: 0;
-  width: 100px;
-  height: 25px;
 }
 </style>
