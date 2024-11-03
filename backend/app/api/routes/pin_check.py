@@ -5,7 +5,6 @@ from fastapi.responses import HTMLResponse
 import glob
 import json
 from pydantic import BaseModel
-from typing import List
 
 
 router = APIRouter()
@@ -30,6 +29,9 @@ class PinCheckData(BaseModel):
     
 class UserList(BaseModel):
     data: list[str]
+    
+def is_data_correct(pin_check_data: PinCheckData) -> bool:
+    return pin_check_data.company_id == "002" and pin_check_data.customer_id == "123456"
 
 
 @router.get("/", response_class=HTMLResponse)
@@ -46,11 +48,8 @@ async def read_pin_check(request: Request):
     
 @router.post("/check")
 async def check_customer_data(pin_check_data: PinCheckData) -> list[str]:  
-    if pin_check_data.company_id != "002":
-        raise HTTPException(status_code=404, detail="Incorrect Company ID")
-    
-    if pin_check_data.customer_id != "123456":
-        raise HTTPException(status_code=404, detail="Incorrect CustomerID")
+    if not is_data_correct(pin_check_data):
+        raise HTTPException(status_code=404, detail="Incorrect Company ID or Customer ID")
     
     users = ["example@email.com", "test@test.com", "user@user.com"] if pin_check_data.pin == "123456" else []
     
