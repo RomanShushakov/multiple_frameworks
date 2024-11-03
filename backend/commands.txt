@@ -10,6 +10,9 @@ fastapi dev app/main.py
 For prod mode:
 fastapi run app/main.py
 
+For test:
+pytest
+
 
 ctrl + shift + p
 python: select interpreter
