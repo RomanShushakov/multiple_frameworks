@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:browser": "vitest --workspace=vitest.workspace.js"
+    "test": "vitest --workspace=vitest.workspace.js"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@vitest/browser": "^2.1.4",
     "playwright": "^1.48.2",
+    "vitest": "^2.1.4",
     "vitest-browser-vue": "^0.0.1"
   }
 }

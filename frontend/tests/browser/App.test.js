@@ -4,9 +4,9 @@ import { render } from 'vitest-browser-vue';
 import { createI18n } from 'vue-i18n';
 
 // internal imports
-import App from '../src/App.vue';
-import en from '../src/translations/pin_check/en.json';
-import de from '../src/translations/pin_check/de.json';
+import App from '../../src/App.vue';
+import en from '../../src/translations/pin_check/en.json';
+import de from '../../src/translations/pin_check/de.json';
 
 
 test('App', async () => {
