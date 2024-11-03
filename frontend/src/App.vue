@@ -1,8 +1,8 @@
 <script setup>
 // external imports
 import { ref } from 'vue';
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap";
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap';
 
 // internal imports
 import TopBar from './components/TopBar.vue';
