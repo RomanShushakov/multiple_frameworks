@@ -9,7 +9,7 @@ import en from '../../src/translations/pin_check/en.json';
 import de from '../../src/translations/pin_check/de.json';
 
 
-test('App', async () => {
+test('App component', async () => {
   const i18n = createI18n({
     locale: 'en',
     fallbackLocale: 'de',

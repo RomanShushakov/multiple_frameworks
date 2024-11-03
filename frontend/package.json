@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest --workspace=vitest.workspace.js",
-    "test:coverage": "vitest --workspace=vitest.workspace.js --coverage.enabled"
+    "test:prod": "vitest --workspace=vitest.workspace.prod.js",
+    "test:coverage": "vitest --workspace=vitest.workspace.prod.js --coverage.enabled"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
